@@ -4,23 +4,42 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float PlayerSpeed = 10;
+    public float PlayerSpeed = 5f;
     public Rigidbody2D rb;
+    public Transform movePoint;
+    public LayerMask whatStopsMovement;
+    public Animator anim;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        movePoint.parent = null;
     }
 
     // Update is called once per frame
     void Update()
     {
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
+        transform.position = Vector3.MoveTowards(transform.position, movePoint.position, PlayerSpeed * Time.deltaTime);
 
-        Vector3 tempVect = new Vector3(h, v, 0);
-        tempVect = tempVect.normalized * PlayerSpeed * Time.deltaTime;
-        rb.MovePosition(rb.transform.position + tempVect);
+        if (Vector3.Distance(transform.position, movePoint.position) <= .05f)
+        {
+            if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f)
+            {
+                if (Physics2D.OverlapCircle(movePoint.position + new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f), 2f, whatStopsMovement))
+                {
+                    movePoint.position += new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f);
+                }
+            
+            }
+            if (Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f)
+            {
+                movePoint.position += new Vector3(0f, Input.GetAxisRaw("Vertical"), 0f);
+            }
+            anim.SetBool("moving", false);
+        }
+        else
+        {
+            anim.SetBool("moving", true);
+        }
     }
 }
