@@ -41,6 +41,19 @@ public class GameController : MonoBehaviour
 
     public bool finishedGame = false;
 
+    int iceTileCount;
+    public int tilesMeltedThisLevel;
+
+    int levelsSolved;
+
+    GameObject currentTile;
+
+    GameObject portalOne;
+    GameObject portalTwo;
+
+    GameObject Lock;
+    GameObject Key;
+
     //function: check if character can move at all anymore and restart level if no - add this in separate script, call the restart function in this script then if needed.
 
     public void RestartLevel()
@@ -89,7 +102,7 @@ public class GameController : MonoBehaviour
                 if(thisCode == thisTile.tileCode)
                 {
                     //If it's a match, create an instance of that tile there
-                    Instantiate(tilesTypes[x], new Vector2(tileLoc.x, tileLoc.y), Quaternion.identity, this.transform);
+                    currentTile = Instantiate(tilesTypes[x], new Vector2(tileLoc.x, tileLoc.y), Quaternion.identity, this.transform);
                     //move over to the right for the next tile to spawn
                     tileLoc.x += 1;
 
@@ -98,6 +111,26 @@ public class GameController : MonoBehaviour
                     {
 
                         playerCharacter.transform.position = new Vector2(tileLoc.x-1, tileLoc.y);
+                    }
+                    else if(thisCode == 'I' || thisCode == 'F')
+                    {
+                        iceTileCount ++;
+                    }
+                    else if(thisCode == 'H')
+                    {
+                        Lock = currentTile;
+                    }
+                    else if(thisCode == 'K' || thisCode == '!' || thisCode == '&')
+                    {
+                        Key = currentTile;
+                    }
+                    else if(thisCode == '1')
+                    {
+                        portalOne = currentTile;
+                    }
+                    else if(thisCode == '2')
+                    {
+                        portalTwo = currentTile;
                     }
                 }
                 
@@ -124,6 +157,11 @@ public class GameController : MonoBehaviour
     void ExitGame()
     {
         Application.Quit();
+    }
+
+    void Teleport()
+    {
+
     }
 
     // Start is called before the first frame update
@@ -163,5 +201,11 @@ public class GameController : MonoBehaviour
             NextLevel();
         }
 
+
+        if(Key == null && Lock != null)
+        {
+            Instantiate(tilesTypes[4], Lock.transform.position, Lock.transform.rotation, this.transform);
+            Destroy(Lock.gameObject);
+        }
     }
 }
