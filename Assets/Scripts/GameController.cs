@@ -8,10 +8,10 @@ public class GameController : MonoBehaviour
 
     public GameObject playerCharacter;
 
-    enum GameState {START, INSTRUCTIONS, PLAYING, FINISHED};
+    public enum GameState {START, INSTRUCTIONS, PLAYING, FINISHED, END};
     GameObject firstState;
     GameObject secondState;
-    GameState currentState;
+    public GameState currentState;
 
     GameObject ExitPoint;
 
@@ -39,6 +39,8 @@ public class GameController : MonoBehaviour
     public GameObject instructionsMenu;
     public GameObject endScreen;
 
+    public bool finishedGame = false;
+
     //function: check if character can move at all anymore and restart level if no - add this in separate script, call the restart function in this script then if needed.
 
     public void RestartLevel()
@@ -47,8 +49,12 @@ public class GameController : MonoBehaviour
         GenerateLevel();
     }
 
-    void NextLevel()
+    public void NextLevel()
     {
+        var children = new List<GameObject>();
+        foreach (Transform child in transform) children.Add(child.gameObject);
+        children.ForEach(child => Destroy(child));
+
         tileLoc = new Vector2(0,0);
         levelNumber ++;
         savedScore = activeScore;
@@ -57,8 +63,6 @@ public class GameController : MonoBehaviour
         levelLines = levelTexts[levelNumber].text;
 
         GenerateLevel();
-
-
     }
 
     void GenerateLevel()
@@ -85,7 +89,7 @@ public class GameController : MonoBehaviour
                 if(thisCode == thisTile.tileCode)
                 {
                     //If it's a match, create an instance of that tile there
-                    Instantiate(tilesTypes[x], new Vector2(tileLoc.x, tileLoc.y), Quaternion.identity);
+                    Instantiate(tilesTypes[x], new Vector2(tileLoc.x, tileLoc.y), Quaternion.identity, this.transform);
                     //move over to the right for the next tile to spawn
                     tileLoc.x += 1;
 
@@ -100,6 +104,21 @@ public class GameController : MonoBehaviour
             }
 
         }
+    }
+
+    public void StartGame()
+    {
+        currentState = GameState.PLAYING;
+        NextLevel();
+        Destroy(secondState);
+    }
+
+    void EndGame()
+    {
+        var children = new List<GameObject>();
+        foreach (Transform child in transform) children.Add(child.gameObject);
+        children.ForEach(child => Destroy(child));
+        Instantiate(endScreen, new Vector2(0,0), Quaternion.identity);
     }
 
     void ExitGame()
@@ -129,18 +148,19 @@ public class GameController : MonoBehaviour
                 secondState = Instantiate(instructionsMenu, new Vector2(0,0), Quaternion.identity);
                 Destroy(firstState);
             }
-            else if(currentState == GameState.INSTRUCTIONS)
-            {
-                currentState = GameState.PLAYING;
-                Destroy(secondState);
-                NextLevel();
-            }
         }
-        if(Input.GetButtonDown("Fire3"))
+
+        if(finishedGame){currentState = GameState.FINISHED;};
+
+        if(currentState == GameState.FINISHED)
         {
-            //TODO: adding debug level skippwhen pressing Left Shift (currently fucks up because it doesn't delete previous tiles, so it just spawns them in the same location)
-            //Make all the spawned tiles child objects of the game controller
-            //delete all child objects at end of every level.
+            EndGame();
+            finishedGame = false;
+            currentState = GameState.END;
+        }
+        if(Input.GetButtonDown("Fire3") && levelNumber != 18)
+        {
+            NextLevel();
         }
 
     }
