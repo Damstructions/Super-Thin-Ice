@@ -133,7 +133,6 @@ GameObject:
   m_Component:
   - component: {fileID: 35513155}
   - component: {fileID: 35513154}
-  - component: {fileID: 35513156}
   - component: {fileID: 35513158}
   - component: {fileID: 35513157}
   - component: {fileID: 35513159}
@@ -212,20 +211,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &35513156
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 35513153}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6f9e31cf6d994944bc25012c73afae3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayerSpeed: 10
-  rb: {fileID: 35513158}
 --- !u!61 &35513157
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -250,7 +235,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.9, y: 0.9}
   m_EdgeRadius: 0
 --- !u!50 &35513158
 Rigidbody2D:
@@ -288,6 +273,7 @@ MonoBehaviour:
   tileDetector: {fileID: 104171218}
   moveCheck: {fileID: 104171221}
   rb: {fileID: 35513158}
+  sr: {fileID: 35513154}
 --- !u!1 &104171218
 GameObject:
   m_ObjectHideFlags: 0

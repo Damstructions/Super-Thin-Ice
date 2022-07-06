@@ -7,6 +7,7 @@ public class DiscretePlayerControl : MonoBehaviour
     public GameObject tileDetector;
     public MovementDetection moveCheck;
     public Rigidbody2D rb;
+    public SpriteRenderer sr;
 
     float coolDown = 0f;
 
@@ -25,11 +26,13 @@ public class DiscretePlayerControl : MonoBehaviour
         if(Input.GetAxis("Horizontal") > 0)
         {
             tileDetector.transform.position = new Vector2(transform.position.x + 1, transform.position.y);
+            sr.flipX = false;
         }
         
         else if(Input.GetAxis("Horizontal") < 0)
         {
             tileDetector.transform.position = new Vector2(transform.position.x - 1, transform.position.y);
+            sr.flipX = true;
         }
         else if(Input.GetAxis("Vertical") > 0)
         {
