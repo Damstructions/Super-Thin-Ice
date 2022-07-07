@@ -33,12 +33,19 @@ public class GameController : MonoBehaviour
     //Score at the beginning of the level
     int savedScore;
     //current score (not updated until level finished)
-    int activeScore;
+    public int activeScore;
+
+    public Text levelDisplay;
+    public Text scoreDisplay;
+    public Text timeDisplay;
 
     //Holds the prefabs for the start and end screens.
     public GameObject startMenu;
     public GameObject instructionsMenu;
     public GameObject endScreen;
+
+    public string endText;
+    public Text endTextDisplay;
 
     public bool finishedGame = false;
 
@@ -62,7 +69,8 @@ public class GameController : MonoBehaviour
     public void RestartLevel()
     {
         activeScore = savedScore;
-        GenerateLevel();
+        levelNumber --;
+        NextLevel();
     }
 
     public void NextLevel()
@@ -158,7 +166,9 @@ public class GameController : MonoBehaviour
         var children = new List<GameObject>();
         foreach (Transform child in transform) children.Add(child.gameObject);
         children.ForEach(child => Destroy(child));
-        Instantiate(endScreen, new Vector2(0,0), Quaternion.identity);
+        GameObject endScreenObject = Instantiate(endScreen, new Vector2(0,0), Quaternion.identity);
+        endTextDisplay = endScreenObject.GetComponentInChildren<Text>();
+        endTextDisplay.text = "Thanks for playing!\n\nYour score: " + activeScore.ToString() + "\n\n Time played: " + Mathf.RoundToInt(playTime).ToString() + "\n\n Press Escape to leave";
     }
 
     void ExitGame()
@@ -200,10 +210,6 @@ public class GameController : MonoBehaviour
             finishedGame = false;
             currentState = GameState.END;
         }
-        if(Input.GetButtonDown("Fire3") && levelNumber != 18)
-        {
-            NextLevel();
-        }
 
 
         if(Key == null && Lock != null)
@@ -214,7 +220,7 @@ public class GameController : MonoBehaviour
 
         canTeleport = playerControl.canTeleport;
 
-        if(portalOne != null && canTeleport == true)
+        if(portalOne != null && portalTwo != null &&canTeleport == true)
         {
             if(playerCharacter.transform.position == portalOne.transform.position)
             {
@@ -227,5 +233,9 @@ public class GameController : MonoBehaviour
                 playerControl.canTeleport = false;
             }
         }
+
+        levelDisplay.text = "Level " + levelNumber.ToString();
+        scoreDisplay.text = "Score: " + activeScore.ToString();
+        timeDisplay.text = Mathf.RoundToInt(playTime).ToString() + "s";
     }
 }
