@@ -7,6 +7,7 @@ public class GameController : MonoBehaviour
 {
 
     public GameObject playerCharacter;
+    DiscretePlayerControl playerControl;
 
     public enum GameState {START, INSTRUCTIONS, PLAYING, FINISHED, END};
     GameObject firstState;
@@ -47,6 +48,8 @@ public class GameController : MonoBehaviour
     int levelsSolved;
 
     GameObject currentTile;
+
+    bool canTeleport;
 
     GameObject portalOne;
     GameObject portalTwo;
@@ -132,6 +135,10 @@ public class GameController : MonoBehaviour
                     {
                         portalTwo = currentTile;
                     }
+                    else if(thisCode == 'T' || thisCode == '%')
+                    {
+                        Instantiate(tilesTypes[4], new Vector2(currentTile.transform.position.x, currentTile.transform.position.y), Quaternion.identity, this.transform);
+                    }
                 }
                 
             }
@@ -159,14 +166,11 @@ public class GameController : MonoBehaviour
         Application.Quit();
     }
 
-    void Teleport()
-    {
-
-    }
-
     // Start is called before the first frame update
     void Start()
     {
+        playerControl = playerCharacter.GetComponent<DiscretePlayerControl>();
+
         levelNumber = 0;
         savedScore = 0;
         currentState = GameState.START;
@@ -206,6 +210,22 @@ public class GameController : MonoBehaviour
         {
             Instantiate(tilesTypes[4], Lock.transform.position, Lock.transform.rotation, this.transform);
             Destroy(Lock.gameObject);
+        }
+
+        canTeleport = playerControl.canTeleport;
+
+        if(portalOne != null && canTeleport == true)
+        {
+            if(playerCharacter.transform.position == portalOne.transform.position)
+            {
+                playerCharacter.transform.position = new Vector2(portalTwo.transform.position.x, portalTwo.transform.position.y);
+                playerControl.canTeleport = false;
+            }
+            else if(playerCharacter.transform.position == portalTwo.transform.position)
+            {
+                playerCharacter.transform.position = new Vector2(portalOne.transform.position.x, portalOne.transform.position.y);
+                playerControl.canTeleport = false;
+            }
         }
     }
 }

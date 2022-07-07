@@ -108,5 +108,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c1fb6f4a5339214181702f23aad4c1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  newTile: {fileID: 0}
+  newTile: {fileID: 1514199677823459513, guid: 2d8f422030f96a446adea74d0ff2e51e, type: 3}
   GameController: {fileID: 0}

@@ -13,6 +13,8 @@ public class DiscretePlayerControl : MonoBehaviour
 
     bool coolingDown = false;
 
+    public bool canTeleport;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -63,6 +65,7 @@ public class DiscretePlayerControl : MonoBehaviour
 
             transform.position = new Vector2(tileDetector.transform.position.x, tileDetector.transform.position.y);
             coolingDown = true;
+            canTeleport = true;
         }
     }
 }

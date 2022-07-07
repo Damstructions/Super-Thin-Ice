@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4985948197057976193}
   - component: {fileID: 7426564938054364058}
-  - component: {fileID: -7257670277978346140}
+  - component: {fileID: 1965701758876429668}
   m_Layer: 0
   m_Name: Empty
   m_TagString: Walkable
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-7257670277978346140
+--- !u!114 &1965701758876429668
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

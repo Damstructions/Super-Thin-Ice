@@ -7,14 +7,35 @@ public class MovementDetection : MonoBehaviour
 
     public bool canMove;
 
-    private void OnTriggerEnter2D(Collider2D other) {
-        if(other.gameObject.tag == "Walkable")
+    public bool restrictedMovement;
+
+    private void OnTriggerStay2D(Collider2D other) 
+    {
+        if(restrictedMovement == false)
         {
-            canMove = true;
+            if(other.gameObject.tag == "Walkable")
+            {
+                canMove = true;
+            }
+            else
+            {
+                canMove = false;
+            }
         }
-        else
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) 
+    {
+        if(restrictedMovement == true)
         {
-            canMove = false;
+            if(other.gameObject.tag == "Walkable")
+            {
+                canMove = true;
+            }
+            else
+            {
+                canMove = false;
+            }
         }
     }
 }
