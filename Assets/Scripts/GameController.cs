@@ -47,6 +47,8 @@ public class GameController : MonoBehaviour
     public string endText;
     public Text endTextDisplay;
 
+    bool exitGameCheck;
+
     public bool finishedGame = false;
 
     int iceTileCount;
@@ -169,6 +171,7 @@ public class GameController : MonoBehaviour
         GameObject endScreenObject = Instantiate(endScreen, new Vector2(0,0), Quaternion.identity);
         endTextDisplay = endScreenObject.GetComponentInChildren<Text>();
         endTextDisplay.text = "Thanks for playing!\n\nYour score: " + activeScore.ToString() + "\n\n Time played: " + Mathf.RoundToInt(playTime).ToString() + "\n\n Press Escape to leave";
+        exitGameCheck = true;
     }
 
     void ExitGame()
@@ -237,5 +240,17 @@ public class GameController : MonoBehaviour
         levelDisplay.text = "Level " + levelNumber.ToString();
         scoreDisplay.text = "Score: " + activeScore.ToString();
         timeDisplay.text = Mathf.RoundToInt(playTime).ToString() + "s";
+
+        if(Input.GetButtonDown("Cancel"))
+        {
+            if(exitGameCheck == false)
+            {
+                EndGame();
+            }
+            else if (exitGameCheck)
+            {
+                ExitGame();
+            }
+        }
     }
 }

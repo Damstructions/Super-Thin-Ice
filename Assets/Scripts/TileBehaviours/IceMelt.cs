@@ -14,6 +14,10 @@ public class IceMelt : MonoBehaviour
         {
             Instantiate(newTile, transform.position, transform.rotation, GameController.transform);
             _gameControl.activeScore ++;
+            if(gameObject.name == "Money(Clone)")
+            {
+                _gameControl.activeScore += 20;
+            }
             Destroy(this.gameObject);
         }
     }
