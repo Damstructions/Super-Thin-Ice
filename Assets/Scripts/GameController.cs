@@ -7,11 +7,12 @@ public class GameController : MonoBehaviour
 {
 
     public GameObject playerCharacter;
+    DiscretePlayerControl playerControl;
 
-    enum GameState {START, INSTRUCTIONS, PLAYING, FINISHED};
+    public enum GameState {START, INSTRUCTIONS, PLAYING, FINISHED, END};
     GameObject firstState;
     GameObject secondState;
-    GameState currentState;
+    public GameState currentState;
 
     GameObject ExitPoint;
 
@@ -32,23 +33,52 @@ public class GameController : MonoBehaviour
     //Score at the beginning of the level
     int savedScore;
     //current score (not updated until level finished)
-    int activeScore;
+    public int activeScore;
+
+    public Text levelDisplay;
+    public Text scoreDisplay;
+    public Text timeDisplay;
 
     //Holds the prefabs for the start and end screens.
     public GameObject startMenu;
     public GameObject instructionsMenu;
     public GameObject endScreen;
 
+    public string endText;
+    public Text endTextDisplay;
+
+    public bool finishedGame = false;
+
+    int iceTileCount;
+    public int tilesMeltedThisLevel;
+
+    int levelsSolved;
+
+    GameObject currentTile;
+
+    bool canTeleport;
+
+    GameObject portalOne;
+    GameObject portalTwo;
+
+    GameObject Lock;
+    GameObject Key;
+
     //function: check if character can move at all anymore and restart level if no - add this in separate script, call the restart function in this script then if needed.
 
     public void RestartLevel()
     {
         activeScore = savedScore;
-        GenerateLevel();
+        levelNumber --;
+        NextLevel();
     }
 
-    void NextLevel()
+    public void NextLevel()
     {
+        var children = new List<GameObject>();
+        foreach (Transform child in transform) children.Add(child.gameObject);
+        children.ForEach(child => Destroy(child));
+
         tileLoc = new Vector2(0,0);
         levelNumber ++;
         savedScore = activeScore;
@@ -57,8 +87,6 @@ public class GameController : MonoBehaviour
         levelLines = levelTexts[levelNumber].text;
 
         GenerateLevel();
-
-
     }
 
     void GenerateLevel()
@@ -85,7 +113,7 @@ public class GameController : MonoBehaviour
                 if(thisCode == thisTile.tileCode)
                 {
                     //If it's a match, create an instance of that tile there
-                    Instantiate(tilesTypes[x], new Vector2(tileLoc.x, tileLoc.y), Quaternion.identity);
+                    currentTile = Instantiate(tilesTypes[x], new Vector2(tileLoc.x, tileLoc.y), Quaternion.identity, this.transform);
                     //move over to the right for the next tile to spawn
                     tileLoc.x += 1;
 
@@ -95,11 +123,52 @@ public class GameController : MonoBehaviour
 
                         playerCharacter.transform.position = new Vector2(tileLoc.x-1, tileLoc.y);
                     }
+                    else if(thisCode == 'I' || thisCode == 'F')
+                    {
+                        iceTileCount ++;
+                    }
+                    else if(thisCode == 'H')
+                    {
+                        Lock = currentTile;
+                    }
+                    else if(thisCode == 'K' || thisCode == '!' || thisCode == '&')
+                    {
+                        Key = currentTile;
+                    }
+                    else if(thisCode == '1')
+                    {
+                        portalOne = currentTile;
+                    }
+                    else if(thisCode == '2')
+                    {
+                        portalTwo = currentTile;
+                    }
+                    else if(thisCode == 'T' || thisCode == '%')
+                    {
+                        Instantiate(tilesTypes[4], new Vector2(currentTile.transform.position.x, currentTile.transform.position.y), Quaternion.identity, this.transform);
+                    }
                 }
                 
             }
 
         }
+    }
+
+    public void StartGame()
+    {
+        currentState = GameState.PLAYING;
+        NextLevel();
+        Destroy(secondState);
+    }
+
+    void EndGame()
+    {
+        var children = new List<GameObject>();
+        foreach (Transform child in transform) children.Add(child.gameObject);
+        children.ForEach(child => Destroy(child));
+        GameObject endScreenObject = Instantiate(endScreen, new Vector2(0,0), Quaternion.identity);
+        endTextDisplay = endScreenObject.GetComponentInChildren<Text>();
+        endTextDisplay.text = "Thanks for playing!\n\nYour score: " + activeScore.ToString() + "\n\n Time played: " + Mathf.RoundToInt(playTime).ToString() + "\n\n Press Escape to leave";
     }
 
     void ExitGame()
@@ -110,6 +179,8 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerControl = playerCharacter.GetComponent<DiscretePlayerControl>();
+
         levelNumber = 0;
         savedScore = 0;
         currentState = GameState.START;
@@ -129,19 +200,42 @@ public class GameController : MonoBehaviour
                 secondState = Instantiate(instructionsMenu, new Vector2(0,0), Quaternion.identity);
                 Destroy(firstState);
             }
-            else if(currentState == GameState.INSTRUCTIONS)
-            {
-                currentState = GameState.PLAYING;
-                Destroy(secondState);
-                NextLevel();
-            }
-        }
-        if(Input.GetButtonDown("Fire3"))
-        {
-            //TODO: adding debug level skippwhen pressing Left Shift (currently fucks up because it doesn't delete previous tiles, so it just spawns them in the same location)
-            //Make all the spawned tiles child objects of the game controller
-            //delete all child objects at end of every level.
         }
 
+        if(finishedGame){currentState = GameState.FINISHED;};
+
+        if(currentState == GameState.FINISHED)
+        {
+            EndGame();
+            finishedGame = false;
+            currentState = GameState.END;
+        }
+
+
+        if(Key == null && Lock != null)
+        {
+            Instantiate(tilesTypes[4], Lock.transform.position, Lock.transform.rotation, this.transform);
+            Destroy(Lock.gameObject);
+        }
+
+        canTeleport = playerControl.canTeleport;
+
+        if(portalOne != null && portalTwo != null &&canTeleport == true)
+        {
+            if(playerCharacter.transform.position == portalOne.transform.position)
+            {
+                playerCharacter.transform.position = new Vector2(portalTwo.transform.position.x, portalTwo.transform.position.y);
+                playerControl.canTeleport = false;
+            }
+            else if(playerCharacter.transform.position == portalTwo.transform.position)
+            {
+                playerCharacter.transform.position = new Vector2(portalOne.transform.position.x, portalOne.transform.position.y);
+                playerControl.canTeleport = false;
+            }
+        }
+
+        levelDisplay.text = "Level " + levelNumber.ToString();
+        scoreDisplay.text = "Score: " + activeScore.ToString();
+        timeDisplay.text = Mathf.RoundToInt(playTime).ToString() + "s";
     }
 }
