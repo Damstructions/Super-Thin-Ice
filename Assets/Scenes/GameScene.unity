@@ -407,50 +407,50 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: Buttons
     clip: {fileID: 8300000, guid: a5b93cfc2dc4c054f9e2eec5c56676b8, type: 3}
-    volume: 0
-    pitch: 0
+    volume: 0.5
+    pitch: 1
     loop: 0
     source: {fileID: 0}
-  - name: 'Double Ice '
+  - name: Double
     clip: {fileID: 8300000, guid: 91156f27770bf9548b57464f037375e6, type: 3}
-    volume: 0
-    pitch: 0
+    volume: 0.5
+    pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: Ending
     clip: {fileID: 8300000, guid: 9d25855a09db75e4f9a970909dbb452e, type: 3}
-    volume: 0
-    pitch: 0
+    volume: 0.5
+    pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: Unlock
     clip: {fileID: 8300000, guid: b21299fcf084d964fa04366aedf6f27e, type: 3}
-    volume: 0
-    pitch: 0
+    volume: 0.5
+    pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: Movement
     clip: {fileID: 8300000, guid: b41a41dae155d5440bc7e413042ec2c7, type: 3}
-    volume: 0
-    pitch: 0
+    volume: 0.5
+    pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: Startup
     clip: {fileID: 8300000, guid: 61a6030fa816ca545858993a1a0e82e5, type: 3}
-    volume: 0
-    pitch: 0
+    volume: 0.5
+    pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: Reset
     clip: {fileID: 8300000, guid: 002b2d8b7535d2f40b97d0a6507bb787, type: 3}
-    volume: 0
-    pitch: 0
+    volume: 0.5
+    pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: Treasure
     clip: {fileID: 8300000, guid: 4c32944ab709bd6428863a030b98db76, type: 3}
-    volume: 0
-    pitch: 0
+    volume: 0.5
+    pitch: 1
     loop: 0
     source: {fileID: 0}
 --- !u!1 &647276110

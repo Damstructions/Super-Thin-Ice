@@ -72,6 +72,10 @@ public class GameController : MonoBehaviour
     {
         activeScore = savedScore;
         levelNumber --;
+        //Sound
+        FindObjectOfType<AudioManager>().Play("Reset");
+        //Sound
+
         NextLevel();
     }
 
@@ -93,8 +97,12 @@ public class GameController : MonoBehaviour
 
     void GenerateLevel()
     {
+        //Sound
+        FindObjectOfType<AudioManager>().Play("Startup");
+        //Sound 
+
         //Cycles through the current level string to read each code
-        for(int i = 0; i < levelLines.Length; i++)
+        for (int i = 0; i < levelLines.Length; i++)
         {
             //the current character code being read
             char thisCode = levelLines[i];
@@ -165,6 +173,9 @@ public class GameController : MonoBehaviour
 
     void EndGame()
     {
+        //Sound
+        FindObjectOfType<AudioManager>().Play("Ending");
+        //Sound
         var children = new List<GameObject>();
         foreach (Transform child in transform) children.Add(child.gameObject);
         children.ForEach(child => Destroy(child));
