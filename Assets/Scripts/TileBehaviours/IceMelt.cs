@@ -17,7 +17,13 @@ public class IceMelt : MonoBehaviour
             if(gameObject.name == "Money(Clone)")
             {
                 _gameControl.activeScore += 20;
+                //Sound
+                FindObjectOfType<AudioManager>().Play("Treasure");
+                //Sound
             }
+            //Sound
+            FindObjectOfType<AudioManager>().Play("Movement");
+            //Sound
             Destroy(this.gameObject);
         }
     }
