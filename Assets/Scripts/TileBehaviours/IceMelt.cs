@@ -21,6 +21,12 @@ public class IceMelt : MonoBehaviour
                 FindObjectOfType<AudioManager>().Play("Treasure");
                 //Sound
             }
+            else if(gameObject.name == "Double Ice(Clone)")
+            {
+                //Sound
+                FindObjectOfType<AudioManager>().Play("Double");
+                //Sound
+            }
             //Sound
             FindObjectOfType<AudioManager>().Play("Movement");
             //Sound

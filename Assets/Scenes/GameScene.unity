@@ -479,7 +479,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 647276110}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.46, y: -0.03, z: 10}
+  m_LocalPosition: {x: -0.1793, y: 0.969, z: 10}
   m_LocalScale: {x: 3.35, y: 3.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -552,7 +552,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 12.7139435, y: 9.0765915}
+  m_Size: {x: 5.4140887, y: 4.4064603}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -594,7 +594,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BackGroundColor: {r: 0.6117647, g: 0.8588236, b: 0.9921569, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -611,7 +611,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 9.9
+  orthographic size: 11.41
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -635,7 +635,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1006607855}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.24, y: -8.49, z: -10}
+  m_LocalPosition: {x: 8.86, y: -8.94, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1016,6 +1016,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1603154389}
   - component: {fileID: 1603154388}
+  - component: {fileID: 1603154390}
   m_Layer: 0
   m_Name: GameControl
   m_TagString: Untagged
@@ -1036,9 +1037,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCharacter: {fileID: 35513153}
+  hintScript: {fileID: 1603154390}
+  hintTile: {fileID: 0}
   currentState: 0
   levelTexts:
-  - {fileID: 4900000, guid: 3fe970ac1d91a52448b5ab31bc4dd17f, type: 3}
+  - {fileID: 4900000, guid: 7ab20c88bef193f43ba5b1bfd50d0010, type: 3}
   - {fileID: 4900000, guid: d1ba7cde6a1a0124c8154984ff9ad6da, type: 3}
   - {fileID: 4900000, guid: c6c52abedd1d0014da66e75d352f1bf6, type: 3}
   - {fileID: 4900000, guid: a0aeb0c46a8eab24792ad37e9afbf8df, type: 3}
@@ -1075,6 +1078,8 @@ MonoBehaviour:
   - {fileID: 5764261702163785961, guid: 8b0584e5f17adb14fb78987dead4caca, type: 3}
   - {fileID: 5800010416844769884, guid: 80273a27549db6242a8b1233ee4324c4, type: 3}
   tileLoc: {x: 0, y: 0}
+  firstTimeGenerated: 1
+  savedHintLocation: {fileID: 0}
   levelNumber: 0
   activeScore: 0
   levelDisplay: {fileID: 1831804967}
@@ -1102,6 +1107,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1603154390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1603154387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a58b9837fafcf0c4da1618ee7aeefb52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameController: {fileID: 1603154388}
+  nextLevelText: {fileID: 0}
+  nextLevelLines: 
+  keyHintTile: {fileID: 2945195952398040484, guid: 3e02d80a7c9fa504b830e5af4c162412, type: 3}
+  blank: {fileID: 0}
+  tileLoc: {x: 0, y: 0}
+  nextLevelNumber: 0
 --- !u!1 &1802562726
 GameObject:
   m_ObjectHideFlags: 0
@@ -1302,7 +1326,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0.45, y: 0.51}
   m_SizeDelta: {x: 1700, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2009534487
@@ -1392,7 +1416,7 @@ Transform:
   m_GameObject: {fileID: 2015093892}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1}
-  m_LocalScale: {x: 2.05, y: 2.05, z: 2.05}
+  m_LocalScale: {x: 2.1338565, y: 2.1338565, z: 2.1338565}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1006607858}

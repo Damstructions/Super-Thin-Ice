@@ -258,6 +258,9 @@ public class GameController : MonoBehaviour
 
         if(Key == null && Lock != null)
         {
+            //sound
+            FindObjectOfType<AudioManager>().Play("Unlock");
+            //sound
             Instantiate(tilesTypes[4], Lock.transform.position, Lock.transform.rotation, this.transform);
             Destroy(Lock.gameObject);
         }

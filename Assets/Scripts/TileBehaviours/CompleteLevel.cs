@@ -24,6 +24,10 @@ public class CompleteLevel : MonoBehaviour
             else
             {
                 _gameController.finishedGame = true;
+
+                //Sound
+                FindObjectOfType<AudioManager>().Play("Ending");
+                //Sound
             }
             
         }
