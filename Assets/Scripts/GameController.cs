@@ -8,6 +8,8 @@ public class GameController : MonoBehaviour
 
     public GameObject playerCharacter;
     DiscretePlayerControl playerControl;
+    public HintReveal hintScript;
+    public GameObject hintTile;
 
     public enum GameState {START, INSTRUCTIONS, PLAYING, FINISHED, END};
     GameObject firstState;
@@ -26,6 +28,9 @@ public class GameController : MonoBehaviour
     public GameObject[] tilesTypes = new GameObject[10];
     //The location the tiles spawn at, updates after each tile is spawned
     public Vector2 tileLoc;
+
+    public bool firstTimeGenerated = true;
+    public GameObject savedHintLocation;
 
     public int levelNumber;
     float playTime = 0.0f;
@@ -72,6 +77,10 @@ public class GameController : MonoBehaviour
     {
         activeScore = savedScore;
         levelNumber --;
+
+        hintScript.nextLevelNumber -= 2;
+        firstTimeGenerated = false;
+
         //Sound
         FindObjectOfType<AudioManager>().Play("Reset");
         //Sound
@@ -84,9 +93,14 @@ public class GameController : MonoBehaviour
         var children = new List<GameObject>();
         foreach (Transform child in transform) children.Add(child.gameObject);
         children.ForEach(child => Destroy(child));
+        if(firstTimeGenerated == true){
+            Destroy(hintTile);
+        }
+        
 
         tileLoc = new Vector2(0,0);
         levelNumber ++;
+        hintScript.nextLevelNumber = levelNumber +2;
         savedScore = activeScore;
 
         //Updates the level to the new one
@@ -118,12 +132,26 @@ public class GameController : MonoBehaviour
                 }
                 //Calls the information attached to the tile prefab being checked
                 thisTile = tilesTypes[x].GetComponent<TileInformation>();
-
+                
+                
                 //Compares it to the current tile code character being read
                 if(thisCode == thisTile.tileCode)
                 {
                     //If it's a match, create an instance of that tile there
                     currentTile = Instantiate(tilesTypes[x], new Vector2(tileLoc.x, tileLoc.y), Quaternion.identity, this.transform);
+
+                    if(firstTimeGenerated == true)
+                    {
+                        hintTile = hintScript.CheckForKey(i);
+                    }
+                    /*
+                    else if(firstTimeGenerated == false)
+                    {
+                        hintScript.nextLevelNumber -= 2;
+                        hintTile = hintScript.CheckForKey(i);
+                    }*/
+
+                    
                     //move over to the right for the next tile to spawn
                     tileLoc.x += 1;
 
@@ -157,6 +185,8 @@ public class GameController : MonoBehaviour
                     {
                         Instantiate(tilesTypes[4], new Vector2(currentTile.transform.position.x, currentTile.transform.position.y), Quaternion.identity, this.transform);
                     }
+                    
+                    
                 }
                 
             }
