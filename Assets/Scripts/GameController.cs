@@ -170,7 +170,7 @@ public class GameController : MonoBehaviour
         children.ForEach(child => Destroy(child));
         GameObject endScreenObject = Instantiate(endScreen, new Vector2(0,0), Quaternion.identity);
         endTextDisplay = endScreenObject.GetComponentInChildren<Text>();
-        endTextDisplay.text = "Thanks for playing!\n\nYour score: " + activeScore.ToString() + "\n\n Time played: " + Mathf.RoundToInt(playTime).ToString() + "\n\n Press Escape to leave";
+        endTextDisplay.text = "Thanks for playing!\n\nYour score: " + activeScore.ToString() + "\n\n Time played: " + Mathf.RoundToInt(playTime).ToString() + "\n\n Level: " + levelNumber.ToString();
         exitGameCheck = true;
     }
 
