@@ -14,6 +14,9 @@ public class CompleteLevel : MonoBehaviour
             if(_gameController.levelNumber < 18)
             {
                 _gameController.NextLevel();
+                //Sound
+                FindObjectOfType<AudioManager>().Play("Red Tile");
+                //Sound
             }
             else
             {
