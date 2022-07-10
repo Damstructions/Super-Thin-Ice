@@ -11,9 +11,11 @@ public class CompleteLevel : MonoBehaviour
     {
         if(other.gameObject.name == "PlayerCharacter")
         {
+            _gameController.firstTimeGenerated = true;
             if(_gameController.levelNumber < 18)
             {
                 _gameController.NextLevel();
+                
             }
             else
             {
